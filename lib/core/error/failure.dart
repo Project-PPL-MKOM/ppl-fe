@@ -14,3 +14,8 @@ class ServerFailure extends Failure {
   @override
   List<Object?> get props => [];
 }
+
+class LocalFailure extends Failure {
+  @override
+  List<Object?> get props => [];
+}
