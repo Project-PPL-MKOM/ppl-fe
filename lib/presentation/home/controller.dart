@@ -37,6 +37,7 @@ class HomeController extends GetxController {
       },
     );
     loadBabiesDone.value = true;
+    babies.refresh();
   }
 
   void navigateAddNewProfile() async {
@@ -56,5 +57,10 @@ class HomeController extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
       );
     }
+  }
+
+  void navigateDashboard(BabyProfile data) async {
+    await Get.toNamed(AppRoutes.dashboard, arguments: data);
+    reloadBabies();
   }
 }

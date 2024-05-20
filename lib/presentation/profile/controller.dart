@@ -5,12 +5,14 @@ import 'package:project/core/utils/ext.dart';
 import 'package:project/di.dart';
 import 'package:project/domain/entities/baby_profile.dart';
 import 'package:project/domain/usecases/add_new_baby_profiles.dart';
+import 'package:project/domain/usecases/update_baby_profile.dart';
 import 'widgets/confirm_dialog.dart';
 
 class ProfileController extends GetxController {
   final formKey = GlobalKey<FormState>();
   bool isEditingMode = false;
 
+  String _id = '';
   final nameCtrl = TextEditingController();
   final dateCtrl = TextEditingController();
   final gender = Gender.male.obs;
@@ -22,6 +24,7 @@ class ProfileController extends GetxController {
       isEditingMode = arg['edit'];
       if (isEditingMode && arg['data'] is BabyProfile) {
         BabyProfile data = arg['data'];
+        _id = data.id;
         nameCtrl.text = data.name;
         dateCtrl.text = data.bornDate.repr;
         gender.value = data.gender;
@@ -92,5 +95,33 @@ class ProfileController extends GetxController {
       return;
     }
     Get.back(result: newData);
+  }
+
+  Future<void> updateProfile() async {
+    final isValid = formKey.currentState?.validate() ?? false;
+    if (!isValid) return;
+    final task = await Injector.instance<UpdateBabyProfile>();
+    final data = BabyProfile(
+      id: _id,
+      name: nameCtrl.text,
+      bornDate: dateCtrl.text.toDate,
+      gender: gender.value,
+    );
+    final result = await task(
+      UpdateBabyProfileParams(id: _id, data: data),
+    );
+    final success = result.fold((_) => false, (_) => true);
+    if (!success) {
+      Get.snackbar(
+        'Edit Profil',
+        'Profil bayi gagal diubah',
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        icon: const Icon(Icons.error, color: Colors.white),
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+    Get.back(result: data);
   }
 }

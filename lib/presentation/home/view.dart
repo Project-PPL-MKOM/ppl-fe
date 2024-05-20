@@ -33,7 +33,10 @@ class HomeView extends GetView<HomeController> {
             () => SearchableList<BabyProfile>(
               // ignore: invalid_use_of_protected_member
               initialList: controller.babies.value,
-              itemBuilder: (BabyProfile data) => BabyCard(data: data),
+              itemBuilder: (BabyProfile data) => GestureDetector(
+                onTap: () => controller.navigateDashboard(data),
+                child: BabyCard(data: data),
+              ),
               seperatorBuilder: (_, __) => const SizedBox(height: 10),
               listViewPadding: const EdgeInsets.only(bottom: 20),
               filter: (value) => controller.babies

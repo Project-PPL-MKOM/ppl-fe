@@ -143,9 +143,11 @@ class ProfileView extends GetView<ProfileController> {
                   ),
                   const Spacer(),
                   _acionButton(
-                    'Tambah',
+                    controller.isEditingMode ? 'Simpan' : 'Tambah',
                     AppTheme.primary800,
-                    controller.addNewProfile,
+                    controller.isEditingMode
+                        ? controller.updateProfile
+                        : controller.addNewProfile,
                   ),
                   const SizedBox(height: 16),
                   _acionButton(
