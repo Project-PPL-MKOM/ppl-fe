@@ -12,7 +12,6 @@ class SplashscreenView extends GetView<SplashscreenController> {
       backgroundColor: AppTheme.primary400,
       body: Center(
         child: SizedBox(
-          // padding: const EdgeInsets.symmetric(horizontal: 20),
           width: 1000,
           child: Image.asset('assets/icons/icon-sm.png'),
         ),

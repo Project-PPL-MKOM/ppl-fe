@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project/core/theme/app_theme.dart';
 import 'package:project/domain/entities/baby_profile.dart';
-import 'package:project/presentation/home/style.dart';
-import 'package:project/presentation/home/widgets/baby_card.dart';
-import 'package:project/presentation/home/widgets/message_view.dart';
+import 'style.dart';
+import 'widgets/baby_card.dart';
+import 'widgets/message_view.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 import 'controller.dart';
 

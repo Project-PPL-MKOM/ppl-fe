@@ -14,6 +14,5 @@ class SplashscreenController extends GetxController {
     final task = await Injector.instance<IsIntroDone>();
     final isIntroDone = task();
     Get.offNamed(isIntroDone ? AppRoutes.home : AppRoutes.landing);
-    // Get.rootDelegate.offNamed(AppRoutes.landing);
   }
 }

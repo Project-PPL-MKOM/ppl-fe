@@ -20,7 +20,6 @@ class AppPages {
       name: AppRoutes.landing,
       page: () => LandingView(),
       binding: LandingBinding(),
-      // middlewares: [LandingMiddleware()],
     ),
     GetPage(
       name: AppRoutes.home,

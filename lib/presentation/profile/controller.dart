@@ -5,7 +5,7 @@ import 'package:project/core/utils/ext.dart';
 import 'package:project/di.dart';
 import 'package:project/domain/entities/baby_profile.dart';
 import 'package:project/domain/usecases/add_new_baby_profiles.dart';
-import 'package:project/presentation/profile/widgets/confirm_dialog.dart';
+import 'widgets/confirm_dialog.dart';
 
 class ProfileController extends GetxController {
   final formKey = GlobalKey<FormState>();
@@ -64,9 +64,9 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future<bool> displayBackWarning() async {
+  Future<void> onBackInvoked() async {
     bool? confirm = await Get.dialog(const ConfirmDialog());
-    return confirm ?? false;
+    if (confirm ?? false) Get.back();
   }
 
   Future<void> addNewProfile() async {
