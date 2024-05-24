@@ -47,5 +47,9 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSCameraUsageDescription</key>
+		<string>Camera need to be used to take a baby photo</string>
+		<!-- <key>NSMicrophoneUsageDescription</key>
+		<string>Explanation on why the microphone access is needed.</string> -->
 	</dict>
 </plist>
