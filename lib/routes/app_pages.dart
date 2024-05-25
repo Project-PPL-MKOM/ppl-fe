@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:project/presentation/calculate/calculate.dart';
 import 'package:project/presentation/dashboard/dashboard.dart';
 import 'package:project/presentation/home/home.dart';
 import 'package:project/presentation/landing/landing.dart';
