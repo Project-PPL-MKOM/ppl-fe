@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:project/presentation/calculate/calculate.dart';
 import 'package:project/presentation/dashboard/dashboard.dart';
+import 'package:project/presentation/history/history.dart';
 import 'package:project/presentation/home/home.dart';
 import 'package:project/presentation/landing/landing.dart';
 import 'package:project/presentation/profile/profile.dart';
@@ -36,6 +37,16 @@ class AppPages {
       name: AppRoutes.dashboard,
       page: () => const DashboardView(),
       binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.calculate,
+      page: () => const CalculateView(),
+      binding: CalculateBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.history,
+      page: () => const HistoryView(),
+      binding: HistoryBinding(),
     ),
   ];
 }
