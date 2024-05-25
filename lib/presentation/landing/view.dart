@@ -11,19 +11,19 @@ class LandingView extends GetView<LandingController> {
 
   final _contentConfigs = [
     ContentConfig(
-      pathImage: AppAssets.imgPlan,
+      pathImage: AppAssets.imgWelcome1,
       description: 'Temukan Keajaiban Pertumbuhan Bayi Anda',
       styleDescription: descTextStyle.copyWith(color: AppTheme.primary800),
       marginDescription: descTextMargin,
     ),
     ContentConfig(
-      pathImage: AppAssets.imgHeightTrend,
+      pathImage: AppAssets.imgWelcome2,
       description: 'Bayi Tumbuh Cepat, Kami Membantu Anda Mengikutinya',
       styleDescription: descTextStyle,
       marginDescription: descTextMargin,
     ),
     ContentConfig(
-      pathImage: AppAssets.imgBabyMeasure,
+      pathImage: AppAssets.imgWelcome3,
       description: 'Cek Tinggi Bayi: Mudah, Akurat, Terpercaya',
       styleDescription: descTextStyle,
       marginDescription: descTextMargin,

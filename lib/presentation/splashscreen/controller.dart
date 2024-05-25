@@ -6,8 +6,8 @@ import 'package:project/routes/app_pages.dart';
 class SplashscreenController extends GetxController {
   @override
   void onInit() {
-    _navigate();
     super.onInit();
+    _navigate();
   }
 
   Future<void> _navigate() async {

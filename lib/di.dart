@@ -1,15 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:project/data/datasources/local/local_ds.dart';
-import 'package:project/data/repositories/app_info_repo_impl.dart';
-import 'package:project/data/repositories/baby_profile_repo_impl.dart';
-import 'package:project/domain/repositories/app_info_repo.dart';
-import 'package:project/domain/repositories/baby_profile_repo.dart';
-import 'package:project/domain/usecases/add_new_baby_profiles.dart';
-import 'package:project/domain/usecases/delete_baby_profile.dart';
-import 'package:project/domain/usecases/get_baby_profiles.dart';
-import 'package:project/domain/usecases/is_intro_done.dart';
-import 'package:project/domain/usecases/mark_is_intro_done.dart';
-import 'package:project/domain/usecases/update_baby_profile.dart';
+import 'package:project/data/datasources/remote/remote_ds.dart';
+import 'package:project/data/repositories/repository.dart';
+import 'package:project/domain/repositories/repository.dart';
+import 'package:project/domain/usecases/usecase.dart';
 
 class Injector {
   final GetIt _getIt;

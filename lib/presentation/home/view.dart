@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project/core/theme/app_theme.dart';
+import 'package:project/core/widgets/appbar.dart';
 import 'package:project/domain/entities/baby_profile.dart';
-import 'style.dart';
 import 'widgets/baby_card.dart';
 import 'widgets/message_view.dart';
 import 'package:searchable_listview/searchable_listview.dart';
@@ -16,10 +16,7 @@ class HomeView extends GetView<HomeController> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Daftar Nama Bayi', style: appBarTitleStyle),
-          centerTitle: true,
-        ),
+        appBar: appBar(title: 'Daftar Nama Bayi'),
         floatingActionButton: FloatingActionButton(
           backgroundColor: AppTheme.primary800,
           shape: const CircleBorder(),
@@ -65,7 +62,6 @@ class HomeView extends GetView<HomeController> {
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                // suffixIcon: const Icon(Icons.search),
               ),
             ),
           ),

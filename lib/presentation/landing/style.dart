@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:project/core/theme/app_theme.dart';
 
 final descTextStyle = AppTheme.family.copyWith(
-  fontSize: 32,
-  fontWeight: FontWeight.bold,
+  fontSize: 28,
+  fontWeight: FontWeight.w700,
 );
 
-const descTextMargin = EdgeInsets.symmetric(horizontal: 20);
+const descTextMargin = EdgeInsets.symmetric(horizontal: 30, vertical: 30);
 
 final buttonTextStyle = AppTheme.family.copyWith(
   fontSize: 14,

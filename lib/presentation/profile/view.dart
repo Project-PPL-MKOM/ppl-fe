@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project/core/theme/app_theme.dart';
+import 'package:project/core/widgets/appbar.dart';
+import 'package:project/core/widgets/button.dart';
 import 'package:project/domain/entities/baby_profile.dart';
+import 'package:project/presentation/profile/widget.dart';
 import 'controller.dart';
-import 'style.dart';
 
 class ProfileView extends GetView<ProfileController> {
   const ProfileView({super.key});
@@ -11,69 +13,21 @@ class ProfileView extends GetView<ProfileController> {
   String get _appTitle =>
       '${controller.isEditingMode ? 'Edit' : 'Tambah'} Profil Bayi';
 
-  Widget _labelText(String label) => Padding(
-        padding: const EdgeInsets.only(bottom: 8),
-        child: Text(label, style: labelTextStyle),
-      );
-
   InputDecoration _textDecoration(String hint, {Widget? suffix}) =>
       InputDecoration(
         contentPadding:
             const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
         isCollapsed: true,
         hintText: hint,
-        hintStyle: hintTextStyle,
+        hintStyle: AppTheme.family.copyWith(
+          fontSize: 14,
+          color: AppTheme.grey,
+        ),
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(8)),
           borderSide: BorderSide(color: AppTheme.grey, width: 1.0),
         ),
         suffixIcon: suffix,
-      );
-
-  Widget _genderButton(Gender gender) => Expanded(
-        child: Obx(
-          () => ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(
-                controller.gender.value == gender
-                    ? AppTheme.dark
-                    : const Color(0xFFEEEEEE),
-              ),
-              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              ),
-            ),
-            onPressed: () => controller.gender.value = gender,
-            child: Text(
-              gender == Gender.male ? 'Laki-laki' : 'Perempuan',
-              style: AppTheme.family.copyWith(
-                fontSize: 16,
-                color: controller.gender.value == gender
-                    ? Colors.white
-                    : AppTheme.dark,
-              ),
-            ),
-          ),
-        ),
-      );
-
-  Widget _acionButton(String label, Color color, void Function()? onPressed) =>
-      ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          minimumSize: const Size.fromHeight(54),
-          backgroundColor: color,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16), // button's shape
-          ),
-        ),
-        onPressed: onPressed,
-        child: Text(
-          label,
-          style: AppTheme.family.copyWith(
-            fontSize: 18,
-            color: Colors.white,
-          ),
-        ),
       );
 
   @override
@@ -88,14 +42,10 @@ class ProfileView extends GetView<ProfileController> {
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            title: Text(_appTitle, style: appBarTitleStyle),
-            centerTitle: true,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, size: 18.0),
-              tooltip: 'Kembali',
-              onPressed: controller.onBackInvoked,
-            ),
+          appBar: appBar(
+            title: _appTitle,
+            withBack: true,
+            onBack: controller.onBackInvoked,
           ),
           body: Padding(
             padding: const EdgeInsets.all(24),
@@ -104,7 +54,7 @@ class ProfileView extends GetView<ProfileController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  _labelText('Nama'),
+                  labelText('Nama'),
                   TextFormField(
                     controller: controller.nameCtrl,
                     decoration: _textDecoration('Masukkan nama'),
@@ -115,8 +65,8 @@ class ProfileView extends GetView<ProfileController> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 20),
-                  _labelText('Tanggal lahir'),
+                  space,
+                  labelText('Tanggal lahir'),
                   TextFormField(
                     controller: controller.dateCtrl,
                     readOnly: true,
@@ -132,28 +82,42 @@ class ProfileView extends GetView<ProfileController> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 20),
-                  _labelText('Jenis Kelamin'),
+                  space,
+                  labelText('Jenis Kelamin'),
                   Row(
                     children: [
-                      _genderButton(Gender.male),
+                      Obx(
+                        () => genderButton(
+                          gender: Gender.male,
+                          selected: controller.gender.value == Gender.male,
+                          onSelected: () =>
+                              controller.gender.value = Gender.male,
+                        ),
+                      ),
                       const SizedBox(width: 20),
-                      _genderButton(Gender.female),
+                      Obx(
+                        () => genderButton(
+                          gender: Gender.female,
+                          selected: controller.gender.value == Gender.female,
+                          onSelected: () =>
+                              controller.gender.value = Gender.female,
+                        ),
+                      ),
                     ],
                   ),
                   const Spacer(),
-                  _acionButton(
-                    controller.isEditingMode ? 'Simpan' : 'Tambah',
-                    AppTheme.primary800,
-                    controller.isEditingMode
+                  actionButton(
+                    label: controller.isEditingMode ? 'Simpan' : 'Tambah',
+                    color: AppTheme.primary800,
+                    onPressed: controller.isEditingMode
                         ? controller.updateProfile
                         : controller.addNewProfile,
                   ),
                   const SizedBox(height: 16),
-                  _acionButton(
-                    'Batal',
-                    AppTheme.red,
-                    controller.onBackInvoked,
+                  actionButton(
+                    label: 'Batal',
+                    color: AppTheme.red,
+                    onPressed: controller.onBackInvoked,
                   ),
                 ],
               ),

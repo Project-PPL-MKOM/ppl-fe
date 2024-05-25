@@ -5,12 +5,16 @@ import 'package:project/routes/app_pages.dart';
 class DashboardController extends GetxController {
   final dataProfile = (null as BabyProfile?).obs;
 
-  @override
-  void onInit() {
+  void _parseArgument() {
     dynamic arg = Get.arguments;
     if (arg is BabyProfile) {
       dataProfile.value = arg;
     }
+  }
+
+  @override
+  void onInit() {
+    _parseArgument();
     super.onInit();
   }
 
@@ -22,5 +26,13 @@ class DashboardController extends GetxController {
     if (editedData != null) {
       dataProfile.value = editedData;
     }
+  }
+
+  void navigateCalculate() {
+    Get.toNamed(AppRoutes.calculate, arguments: dataProfile.value?.id);
+  }
+
+  void navigateHistory() {
+    Get.toNamed(AppRoutes.history, arguments: dataProfile.value?.id);
   }
 }

@@ -1,5 +1,6 @@
 abstract class AppAssets {
-  static const imgPlan = 'assets/images/plan.png';
-  static const imgBabyMeasure = 'assets/images/baby_measure.png';
-  static const imgHeightTrend = 'assets/images/height_trend.png';
+  static const imgWelcome1 = 'assets/images/w1.png';
+  static const imgWelcome2 = 'assets/images/w2.png';
+  static const imgWelcome3 = 'assets/images/w3.png';
+  static const imgAnnotation = 'assets/images/annotation.png';
 }

@@ -2,23 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:project/core/utils/ext.dart';
+import 'package:project/core/widgets/dialog.dart';
 import 'package:project/di.dart';
 import 'package:project/domain/entities/baby_profile.dart';
 import 'package:project/domain/usecases/add_new_baby_profiles.dart';
 import 'package:project/domain/usecases/update_baby_profile.dart';
-import 'widgets/confirm_dialog.dart';
 
 class ProfileController extends GetxController {
   final formKey = GlobalKey<FormState>();
   bool isEditingMode = false;
-
   String _id = '';
+
   final nameCtrl = TextEditingController();
   final dateCtrl = TextEditingController();
   final gender = Gender.male.obs;
 
   @override
   void onInit() {
+    _parseArguments();
+    super.onInit();
+  }
+
+  void _parseArguments() {
     dynamic arg = Get.arguments;
     if (arg is Map<String, dynamic> && arg['edit'] is bool) {
       isEditingMode = arg['edit'];
@@ -30,7 +35,6 @@ class ProfileController extends GetxController {
         gender.value = data.gender;
       }
     }
-    super.onInit();
   }
 
   @override
@@ -46,7 +50,7 @@ class ProfileController extends GetxController {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: curDate ?? DateTime.now(),
-      firstDate: DateTime(2015),
+      firstDate: DateTime(1900),
       lastDate: DateTime(2050),
       builder: (context, child) {
         return Theme(
@@ -72,15 +76,29 @@ class ProfileController extends GetxController {
     if (confirm ?? false) Get.back();
   }
 
-  Future<void> addNewProfile() async {
+  BabyProfile? _validate() {
     final isValid = formKey.currentState?.validate() ?? false;
-    if (!isValid) return;
+    if (!isValid) return null;
+    if (isEditingMode) {
+      return BabyProfile(
+        id: _id,
+        name: nameCtrl.text,
+        bornDate: dateCtrl.text.toDate,
+        gender: gender.value,
+      );
+    } else {
+      return BabyProfile.noId(
+        name: nameCtrl.text,
+        bornDate: dateCtrl.text.toDate,
+        gender: gender.value,
+      );
+    }
+  }
+
+  Future<void> addNewProfile() async {
+    final data = _validate();
+    if (data == null) return;
     final task = await Injector.instance<AddNewBabyProfiles>();
-    final data = BabyProfile.noId(
-      name: nameCtrl.text,
-      bornDate: dateCtrl.text.toDate,
-      gender: gender.value,
-    );
     final result = await task(data);
     final newData = result.fold((_) => null, (v) => v);
     if (newData == null) {
@@ -98,15 +116,9 @@ class ProfileController extends GetxController {
   }
 
   Future<void> updateProfile() async {
-    final isValid = formKey.currentState?.validate() ?? false;
-    if (!isValid) return;
+    final data = _validate();
+    if (data == null) return;
     final task = await Injector.instance<UpdateBabyProfile>();
-    final data = BabyProfile(
-      id: _id,
-      name: nameCtrl.text,
-      bornDate: dateCtrl.text.toDate,
-      gender: gender.value,
-    );
     final result = await task(
       UpdateBabyProfileParams(id: _id, data: data),
     );

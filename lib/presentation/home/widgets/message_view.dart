@@ -9,18 +9,20 @@ class MessageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          isError ? Icons.error : Icons.not_interested,
-          color: isError ? Colors.red : AppTheme.grey,
-        ),
-        Text(
-          msg,
-          style: AppTheme.family.copyWith(color: AppTheme.dark),
-        ),
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            isError ? Icons.error : Icons.not_interested,
+            color: isError ? Colors.red : AppTheme.grey,
+          ),
+          Text(
+            msg,
+            style: AppTheme.family.copyWith(color: AppTheme.dark),
+          ),
+        ],
+      ),
     );
   }
 }

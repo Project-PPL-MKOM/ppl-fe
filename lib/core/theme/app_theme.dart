@@ -10,5 +10,7 @@ abstract class AppTheme {
   static const pink400 = Color(0xFFF542F5);
   static const dark = Color(0xFF212325);
   static const grey = Color(0xFF8F8E94);
+  static const grey200 = Color(0xFFDADADA);
   static const red = Color(0xFFE31818);
+  static const green = Color(0xFF209324);
 }

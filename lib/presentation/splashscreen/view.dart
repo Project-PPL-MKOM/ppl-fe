@@ -11,10 +11,7 @@ class SplashscreenView extends GetView<SplashscreenController> {
     return Scaffold(
       backgroundColor: AppTheme.primary400,
       body: Center(
-        child: SizedBox(
-          width: 1000,
-          child: Image.asset('assets/icons/icon-sm.png'),
-        ),
+        child: Image.asset('assets/icons/icon-sm.png'),
       ),
     );
   }

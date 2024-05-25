@@ -45,7 +45,6 @@ class HomeController extends GetxController {
       AppRoutes.profile,
       arguments: {'edit': false},
     ) as BabyProfile?;
-    // reloadBabies();
     if (newData != null) {
       babies.add(newData);
       Get.snackbar(
