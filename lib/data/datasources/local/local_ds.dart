@@ -1,5 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:project/core/utils/uuid.dart';
+import 'package:project/data/models/baby_height.dart';
 import 'package:project/data/models/baby_profile.dart';
 
 class LocalDataSource {
@@ -9,12 +10,14 @@ class LocalDataSource {
   final _kIsIntroDone = 'is-intro-done';
 
   final _kBabyProfilesBox = 'baby-profiles';
+  final _kBabyHeightsBox = 'baby-heights';
 
   Future<void> initDb() async {
     if (_isInitiated) return;
     await Hive.initFlutter();
     await Hive.openBox(_kInfoBox);
     await Hive.openBox(_kBabyProfilesBox);
+    await Hive.openBox(_kBabyHeightsBox);
     _isInitiated = true;
   }
 
@@ -51,7 +54,30 @@ class LocalDataSource {
   }
 
   Future<void> deleteBabyProfile(String id) async {
-    final box = Hive.box(_kBabyProfilesBox);
-    await box.delete(id);
+    final profileBox = Hive.box(_kBabyProfilesBox);
+    final heightBox = Hive.box(_kBabyHeightsBox);
+    await profileBox.delete(id);
+    final keysToDelete = heightBox
+        .toMap()
+        .entries
+        .where((data) => data.value['babyId'] == id)
+        .map((data) => data.key);
+    await heightBox.deleteAll(keysToDelete);
+  }
+
+  List<BabyHeightModel> getBabyHeights(String babyId) {
+    final box = Hive.box(_kBabyHeightsBox);
+    final values = box.values
+        .map((e) => BabyHeightModel.fromJson(e as Map<dynamic, dynamic>))
+        .where((data) => data.babyId == babyId)
+        .toList();
+    return values;
+  }
+
+  Future<void> addBabyHeight(BabyHeightModel data) async {
+    final box = Hive.box(_kBabyHeightsBox);
+    final id = uniqueId;
+    final newData = data.copyWith(id: id);
+    await box.put(id, newData.toJson);
   }
 }
