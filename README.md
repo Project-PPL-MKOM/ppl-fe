@@ -1,6 +1,6 @@
-# project
+# SABBS
 
-A new Flutter project.
+Aplikasi untuk membantu orang tua memantau tumbuh kembang sang buah hati
 
 ## Getting Started
 
