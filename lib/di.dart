@@ -23,6 +23,7 @@ class Injector {
       await obj.initDb();
       return obj;
     });
+    _getIt.registerSingletonAsync(() async => RemoteDataSource());
   }
 
   void _registerRepositories() {
@@ -32,11 +33,23 @@ class Injector {
       ),
       dependsOn: [LocalDataSource],
     );
+    _getIt.registerSingletonWithDependencies<BabyHeightRepository>(
+      () => BabyHeightRepositoryImpl(
+        localDataSource: _getIt<LocalDataSource>(),
+      ),
+      dependsOn: [LocalDataSource],
+    );
     _getIt.registerSingletonWithDependencies<AppInfoRepository>(
       () => AppInfoRepositoryImpl(
         localDataSource: _getIt<LocalDataSource>(),
       ),
       dependsOn: [LocalDataSource],
+    );
+    _getIt.registerSingletonWithDependencies<CalculationRepository>(
+      () => CalculationRepositoryImpl(
+        remoteDataSource: _getIt<RemoteDataSource>(),
+      ),
+      dependsOn: [RemoteDataSource],
     );
   }
 
@@ -66,6 +79,18 @@ class Injector {
       dependsOn: [BabyProfileRepository],
     );
     _getIt.registerSingletonWithDependencies(
+      () => AddBabyHeight(
+        repository: _getIt<BabyHeightRepository>(),
+      ),
+      dependsOn: [BabyHeightRepository],
+    );
+    _getIt.registerSingletonWithDependencies(
+      () => GetBabyHeights(
+        repository: _getIt<BabyHeightRepository>(),
+      ),
+      dependsOn: [BabyHeightRepository],
+    );
+    _getIt.registerSingletonWithDependencies(
       () => IsIntroDone(
         repository: _getIt<AppInfoRepository>(),
       ),
@@ -76,6 +101,12 @@ class Injector {
         repository: _getIt<AppInfoRepository>(),
       ),
       dependsOn: [AppInfoRepository],
+    );
+    _getIt.registerSingletonWithDependencies(
+      () => ProcessData(
+        repository: _getIt<CalculationRepository>(),
+      ),
+      dependsOn: [CalculationRepository],
     );
   }
 
