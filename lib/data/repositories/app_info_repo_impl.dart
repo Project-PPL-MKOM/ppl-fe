@@ -16,7 +16,7 @@ class AppInfoRepositoryImpl extends AppInfoRepository {
       return Right(localDataSource.isIntroDone);
     } catch (e, st) {
       _logger.severe('Get intro done failed', e, st);
-      return Left(LocalFailure());
+      return Left(LocalFailure(e.toString()));
     }
   }
 
@@ -26,7 +26,7 @@ class AppInfoRepositoryImpl extends AppInfoRepository {
       return Right(localDataSource.markIsIntroDone());
     } catch (e, st) {
       _logger.severe('Mark intro done failed', e, st);
-      return Left(LocalFailure());
+      return Left(LocalFailure(e.toString()));
     }
   }
 }

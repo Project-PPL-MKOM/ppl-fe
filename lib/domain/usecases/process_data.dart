@@ -7,5 +7,9 @@ class ProcessData {
 
   ProcessData({required this.repository});
 
-  Stream<Either<Failure, String>> call() => repository.makeCalculation();
+  Stream<Either<Failure, CalculationDataWithMessage>> call(
+    String filePath,
+    double refLength,
+  ) =>
+      repository.makeCalculation(filePath, refLength);
 }

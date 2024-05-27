@@ -20,7 +20,7 @@ class BabyProfileRepositoryImpl extends BabyProfileRepository {
       return Right(newData);
     } catch (e, st) {
       _logger.severe('Add baby failed', e, st);
-      return Left(LocalFailure());
+      return Left(LocalFailure(e.toString()));
     }
   }
 
@@ -30,7 +30,7 @@ class BabyProfileRepositoryImpl extends BabyProfileRepository {
       return Right(localDataSource.babyProfiles);
     } catch (e, st) {
       _logger.severe('Get baby failed', e, st);
-      return Left(LocalFailure());
+      return Left(LocalFailure(e.toString()));
     }
   }
 
@@ -41,7 +41,7 @@ class BabyProfileRepositoryImpl extends BabyProfileRepository {
       return const Right(null);
     } catch (e, st) {
       _logger.severe('Delete baby failed', e, st);
-      return Left(LocalFailure());
+      return Left(LocalFailure(e.toString()));
     }
   }
 
@@ -52,7 +52,7 @@ class BabyProfileRepositoryImpl extends BabyProfileRepository {
       return const Right(null);
     } catch (e, st) {
       _logger.severe('Update baby failed', e, st);
-      return Left(LocalFailure());
+      return Left(LocalFailure(e.toString()));
     }
   }
 }
