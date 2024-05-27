@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project/core/theme/app_theme.dart';
+import 'package:project/core/utils/img_converter.dart';
 import 'package:project/core/widgets/button.dart';
 import '../controller.dart';
 
@@ -24,34 +25,40 @@ class EndResult extends StatelessWidget {
           child: SizedBox(
             width: _width,
             height: _height,
-            // TODO: show real image
-            child: Image.asset(
-              controller.annotationPath,
+            child: Image.memory(
+              imageFromBase64(controller.annotation.value),
               width: _width,
               height: _height,
+              errorBuilder: (_, e, st) => const Placeholder(),
             ),
           ),
         ),
         const SizedBox(height: 16),
-        Text(
-          'Tinggi badan : ${controller.heightResult} cm',
-          textAlign: TextAlign.center,
-          style: AppTheme.family
-              .copyWith(fontSize: 16, fontWeight: FontWeight.w600),
+        Obx(
+          () => Text(
+            'Tinggi badan : ${controller.height.value.toPrecision(3)} cm',
+            textAlign: TextAlign.center,
+            style: AppTheme.family
+                .copyWith(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
         ),
         const SizedBox(height: 16),
         Row(
           children: [
-            actionButton(
-              label: 'Ulangi',
-              color: AppTheme.red,
-              onPressed: controller.backToStart,
+            Expanded(
+              child: actionButton(
+                label: 'Ulangi',
+                color: AppTheme.red,
+                onPressed: controller.backToStart,
+              ),
             ),
             const SizedBox(width: 16),
-            actionButton(
-              label: 'Selesai',
-              color: AppTheme.primary800,
-              onPressed: controller.saveData,
+            Expanded(
+              child: actionButton(
+                label: 'Selesai',
+                color: AppTheme.primary800,
+                onPressed: controller.saveData,
+              ),
             ),
           ],
         ),

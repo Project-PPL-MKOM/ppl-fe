@@ -44,7 +44,7 @@ class TakePhoto extends StatelessWidget {
             child: Obx(
               () {
                 final path = controller.imagePath.value;
-                final ready = controller.isReady.value;
+                final ready = controller.isCameraIdle.value;
                 if (!ready) {
                   return const Center(
                     child: SizedBox(
@@ -73,24 +73,32 @@ class TakePhoto extends StatelessWidget {
         Obx(
           () {
             final done = controller.imagePath.value != null;
-            final ready = controller.isReady.value;
+            final ready = controller.isCameraIdle.isTrue;
             return Row(
               children: [
-                actionButton(
-                  label: done ? 'Ulangi' : 'Ambil gambar',
-                  color: ready ? AppTheme.red : AppTheme.grey,
-                  onPressed: () {
-                    if (ready) controller.tookPhoto();
-                  },
+                Expanded(
+                  child: actionButton(
+                    label: done ? 'Ulangi' : 'Ambil gambar',
+                    color: ready
+                        ? done
+                            ? AppTheme.red
+                            : AppTheme.primary800
+                        : AppTheme.grey,
+                    onPressed: () {
+                      if (ready) controller.tookPhoto();
+                    },
+                  ),
                 ),
                 done ? const SizedBox(width: 16) : const SizedBox(),
                 done
-                    ? actionButton(
-                        label: 'Lanjut',
-                        color: ready ? AppTheme.primary800 : AppTheme.grey,
-                        onPressed: () {
-                          if (ready) controller.beginProcessing();
-                        },
+                    ? Expanded(
+                        child: actionButton(
+                          label: 'Lanjut',
+                          color: ready ? AppTheme.primary800 : AppTheme.grey,
+                          onPressed: () {
+                            if (ready) controller.beginProcessing();
+                          },
+                        ),
                       )
                     : const SizedBox(),
               ],

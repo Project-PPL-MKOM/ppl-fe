@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
-import 'package:project/core/assets/constants.dart';
 import 'package:project/core/utils/exif.dart';
 import 'package:project/core/widgets/dialog.dart';
 import 'package:project/di.dart';
@@ -14,17 +13,17 @@ import 'package:project/domain/usecases/process_data.dart';
 class CalculateController extends GetxController {
   final _logger = Logger('CalculateController');
   String babyId = '';
-  final activeStepper = 0.obs;
+  final stepIndex = 0.obs;
 
   final imagePath = (null as String?).obs;
-  final isReady = true.obs;
+  final isCameraIdle = true.obs;
 
   final message = ''.obs;
   final stepCount = 0.obs;
+  final isError = false.obs;
 
-  // TODO: replace with real impelementation
-  final annotationPath = AppAssets.imgAnnotation;
-  final heightResult = 100.0;
+  final annotation = ''.obs;
+  final height = 0.0.obs;
 
   void _parseArgument() {
     dynamic arg = Get.arguments;
@@ -41,11 +40,12 @@ class CalculateController extends GetxController {
 
   @override
   void onClose() {
-    activeStepper.close();
+    stepIndex.close();
     imagePath.close();
-    isReady.close();
+    isCameraIdle.close();
     message.close();
     stepCount.close();
+    isError.close();
     super.onClose();
   }
 
@@ -64,7 +64,7 @@ class CalculateController extends GetxController {
 
     try {
       final XFile? photo = await picker.pickImage(source: ImageSource.camera);
-      isReady.value = false;
+      isCameraIdle.value = false;
       if (photo == null) throw Exception('photo is null');
       final rotatedImage = await compute(fixExifRotation, photo.path);
       _logger.info(rotatedImage.path);
@@ -72,40 +72,48 @@ class CalculateController extends GetxController {
     } catch (e, st) {
       _logger.severe('took photo failed', e, st);
     } finally {
-      isReady.value = true;
+      isCameraIdle.value = true;
     }
   }
 
   void beginProcessing() async {
-    activeStepper.value++;
+    stepIndex.value++;
 
     message.value = '';
     stepCount.value = 0;
 
     final task = await Injector.instance<ProcessData>();
-    final stream = task();
+    // TODO: replace with input data
+    const refLength = 30.5;
+    final stream = task(imagePath.value ?? '', refLength);
     stream.listen((result) {
-      result.fold((_) {
-        message.value = 'Terjadi kesalahan';
-        stepCount.value = -1;
-      }, (msg) {
+      result.fold((error) {
+        message.value = error.message;
+        isError.value = true;
+      }, (calcData) {
+        final (message: msg, result: data) = calcData;
         message.value = msg;
+        if (data != null) {
+          height.value = data.height;
+          annotation.value = data.annotation;
+        }
         stepCount.value++;
       });
     }, onDone: () {
-      activeStepper.value++;
+      if (!isError.value) stepIndex.value++;
     });
   }
 
   void backToStart() {
-    activeStepper.value = 0;
+    stepIndex.value = 0;
+    isError.value = false;
   }
 
   Future<void> saveData() async {
     final task = await Injector.instance<AddBabyHeight>();
     final newData = BabyHeight.noId(
       babyId: babyId,
-      height: heightResult,
+      height: height.value,
       timestamp: DateTime.now(),
     );
     final result = await task(newData);

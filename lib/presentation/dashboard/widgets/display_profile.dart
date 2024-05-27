@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:project/core/theme/app_theme.dart';
 import 'package:project/domain/entities/baby_profile.dart';
 
@@ -18,6 +17,9 @@ class DisplayProfile extends StatelessWidget {
 
   int get _age =>
       data == null ? 0 : DateTime.now().difference(data!.bornDate).inDays ~/ 30;
+  String get _date => data == null
+      ? '-'
+      : DateFormat('dd MMM yyyy', 'id_ID').format(data!.bornDate);
 
   @override
   Widget build(BuildContext context) {
@@ -46,18 +48,10 @@ class DisplayProfile extends StatelessWidget {
             children: [
               Icon(Icons.date_range_rounded, color: _iconColor),
               const SizedBox(width: 14),
-              FutureBuilder(
-                  future: initializeDateFormatting('id_ID', null),
-                  builder: (_, __) {
-                    final date = data == null
-                        ? '-'
-                        : DateFormat('dd MMM yyyy', 'id_ID')
-                            .format(data!.bornDate);
-                    return Text(
-                      '$date ($_age bulan)',
-                      style: AppTheme.family.copyWith(fontSize: 20),
-                    );
-                  }),
+              Text(
+                '$_date ($_age bulan)',
+                style: AppTheme.family.copyWith(fontSize: 20),
+              ),
             ],
           ),
         ],

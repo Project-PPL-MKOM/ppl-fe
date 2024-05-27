@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:project/core/theme/app_theme.dart';
+import 'package:project/core/widgets/button.dart';
 import '../controller.dart';
 
 class ProcessStatus extends StatelessWidget {
@@ -13,25 +14,48 @@ class ProcessStatus extends StatelessWidget {
 
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 30),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 30),
           child: SizedBox(
             width: 100,
             height: 100,
-            child: LoadingIndicator(
-              indicatorType: Indicator.ballClipRotateMultiple,
+            child: Obx(
+              () => LoadingIndicator(
+                indicatorType: Indicator.ballClipRotateMultiple,
+                pause: controller.isError.isTrue,
+              ),
             ),
           ),
         ),
         Obx(
-          () => Text(
-            '${controller.message.value} (${controller.stepCount.value}/3)',
-            style: AppTheme.family.copyWith(
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+          () {
+            final isError = controller.isError.isTrue;
+            final msg = controller.message.value;
+            return Text(
+              isError
+                  ? 'Terjadi kesalahan : $msg'
+                  : '$msg (${controller.stepCount.value}/3)',
+              textAlign: TextAlign.center,
+              style: AppTheme.family.copyWith(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+              ),
+            );
+          },
         ),
+        const SizedBox(height: 20),
+        Obx(
+          () {
+            final isError = controller.isError.value;
+            return isError
+                ? actionButton(
+                    label: 'Ulangi',
+                    color: Colors.red,
+                    onPressed: controller.backToStart,
+                  )
+                : const SizedBox();
+          },
+        )
       ],
     );
   }

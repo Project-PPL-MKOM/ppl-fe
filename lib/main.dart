@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:project/core/utils/logger.dart';
 import 'package:project/di.dart';
 import 'package:project/routes/app_pages.dart';
 
-void main() {
+void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   AppLogger.setup();
+  await initializeDateFormatting('id_ID', null);
   Injector.instance.setup();
   FlutterNativeSplash.remove();
 

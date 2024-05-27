@@ -14,15 +14,14 @@ class CalculateView extends GetView<CalculateController> {
   EasyStep _step(String label, IconData icon, int index) => EasyStep(
         customStep: Icon(
           icon,
-          color: controller.activeStepper.value > index
-              ? Colors.white
-              : AppTheme.dark,
+          color:
+              controller.stepIndex.value > index ? Colors.white : AppTheme.dark,
         ),
         customTitle: Text(
           label,
           textAlign: TextAlign.center,
           style: AppTheme.family.copyWith(
-            fontWeight: controller.activeStepper.value == index
+            fontWeight: controller.stepIndex.value == index
                 ? FontWeight.w600
                 : FontWeight.normal,
           ),
@@ -55,7 +54,7 @@ class CalculateView extends GetView<CalculateController> {
           children: [
             Obx(
               () => EasyStepper(
-                activeStep: controller.activeStepper.value,
+                activeStep: controller.stepIndex.value,
                 enableStepTapping: false,
                 lineStyle: const LineStyle(
                   lineLength: 50,
@@ -81,15 +80,14 @@ class CalculateView extends GetView<CalculateController> {
                   _step('Proses gambar', Icons.memory_outlined, 1),
                   _step('Hasil', Icons.straighten_outlined, 2),
                 ],
-                onStepReached: (index) =>
-                    controller.activeStepper.value = index,
+                onStepReached: (index) => controller.stepIndex.value = index,
               ),
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
                 child: Obx(() {
-                  final id = controller.activeStepper.value;
+                  final id = controller.stepIndex.value;
                   return AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
                     child: _content(id),
